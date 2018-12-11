@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style type="text/css">
+    @keyframes firmove {
+      0% {
+          border-color: transparent;
+      }
+      25% {
+          border-color: transparent;
+      }
+      50% {
+          border-color: transparent white transparent transparent;
+      }
+      75% {
+          border-color: transparent white transparent transparent;
+      }
+      100% {
+          border-color: transparent white transparent transparent;
+      }
+    }
+    @keyframes secmove {
+      0% {
+          border-color: transparent;
+      }
+      25% {
+          border-color: transparent;
+      }
+      50% {
+          border-color: transparent;
+      }
+      75% {
+          border-color: transparent white transparent transparent;
+      }
+      100% {
+          border-color: transparent white transparent transparent;
+      }
+    }
+    @keyframes thimove {
+      0% {
+          border-color: transparent;
+      }
+      25% {
+          border-color: transparent;
+      }
+      50% {
+          border-color: transparent;
+      }
+      75% {
+          border-color: transparent;
+      }
+      100% {
+          border-color: transparent white transparent transparent;
+      }
+    }
+    .back-img{
+      position: fixed;
+      top:150px;
+      left: 150px;
+      width: 200px;
+      height: 200px;
+      border-radius: 100px;
+      background-color: #97a8e6;
+      position: relative;
+    }
+    .foo{
+      position:absolute;
+      top:25px;
+      left:-17px;
+      width: 150px;
+      height: 150px;
+      box-sizing: border-box;
+      border-radius: 75px;
+      border-style:solid;
+      border-color: transparent transparent transparent transparent;
+      border-width: 75px;
+      animation:thimove 1s linear infinite;
+      -webkit-animation:thimove 1s linear infinite;
+    }
+    .fan{
+    width: 130px;
+    height: 130px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:-65px;
+    left:-65px;
+    border-radius: 65px;
+    border-style:solid;
+    border-color: transparent #97a8e6 transparent transparent;
+    border-width: 65px;
+    }
+    .fan1{
+    width: 110px;
+    height: 110px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:-55px;
+    left:-55px;
+    border-radius: 55px;
+    border-style:solid;
+    border-color: transparent transparent transparent transparent;
+    border-width: 55px;
+    animation:secmove 1s linear infinite;
+    -webkit-animation:secmove 1s linear infinite;
+    }
+    .fan2{
+    width: 90px;
+    height: 90px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:-45px;
+    left:-45px;
+    border-radius: 45px;
+    border-style:solid;
+    border-color: transparent #97a8e6 transparent transparent;
+    border-width: 45px;
+    }
+    .fan3{
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:-35px;
+    left:-35px;
+    border-radius: 35px;
+    border-style:solid;
+    border-color: transparent transparent transparent transparent;
+    border-width: 35px;
+    animation:firmove 1s linear infinite;
+    -webkit-animation:firmove 1s linear infinite;
+    }
+    .fan4{
+    width: 50px;
+    height: 50px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom:-25px;
+    left:-25px;
+    border-radius: 25px;
+    border-style:solid;
+    border-color: transparent #97a8e6 transparent transparent;
+    border-width: 25px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="back-img">
+      <div class="foo">
+        <div class="fan">
+          <div class="fan1">
+            <div class="fan2">
+              <div class="fan3">
+                <div class="fan4">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+
+    </script>
+  </body>
+</html>

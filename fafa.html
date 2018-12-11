@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>fafa</title>
+  <style type="text/css">
+    .pieces {
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      display: inline-block;
+      position: absolute;
+    }
+
+    .flower1 {
+      top: 50px;
+      left: 50px;
+    }
+
+    @keyframes redmove {
+      from {
+        transform: rotateX(20deg) perspective(0px)scale3d(1, 1, 1);
+      }
+      to {
+        /* top: calc(30% - 80px);
+        left: calc(30% + 80px); */
+        top: var(--mTop);
+        left: var(--mLeft);
+        transform: rotateX(-20deg) perspective(2000px)scale3d(1.2, 1.2, 1.2);
+        opacity: 0;
+      }
+    }
+
+    #rain {
+      width: 300px;
+      height: 300px;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="rain">
+  </div>
+  <button type="button" name="button" id="start">运动</button>
+  <button type="button" name="button" id="stop">停止</button>
+</body>
+<script type="text/javascript">
+  window.onload = function() {
+    console.log(document.styleSheets)
+    var btn = document.getElementById('start');
+    var stop = document.getElementById('stop');
+
+    var rain = document.getElementById('rain');
+    var rWidth = rain.offsetWidth;
+    var rHeight = rain.offsetHeight;
+    var xCenter = parseInt(rWidth / 2);
+    var yCenter = parseInt(rHeight / 2);
+    console.log(xCenter, yCenter);
+
+    function FlowerRain() {
+      this.init = function() {
+        console.log('1');
+      }
+    }
+    //生成花瓣
+    FlowerRain.prototype.createFlower = function(num) {
+      for (var i = 1; i < num + 1; i++) {
+        var element = document.createElement("div");
+        element.className = "pieces flower" + i;
+        var aTop = Math.round(Math.random() * 300) + 'px';
+        var aLeft = Math.round(Math.random() * 300) + 'px';
+        element.style.cssText = "top:" + aTop + ";left:" + aLeft + ";";
+        rain.appendChild(element);
+      }
+    }
+
+    FlowerRain.prototype.fallingDown = function() {
+
+
+    }
+    //运动
+    FlowerRain.prototype.parabola = function(xPos, yPos) {
+      var xPos = parseInt(xPos),
+        yPos = parseInt(yPos);
+      var pieces = document.getElementsByClassName('pieces');
+      var len = pieces.length;
+      for (var i = 0; i < len; i++) {
+        mTop = Math.round(Math.random() * 300 / (i + 1)) + 'px';
+        mLeft = Math.round(Math.random() * 300 / (i + 1)) + 'px';
+        console.log(mTop, mLeft)
+        // pieces[i].style.cssText += "left:"+mLeft+";top:"+mTop+";animation:redmove 3s infinite;transition: all ease-in-out;"
+        pieces[i].style.cssText += "animation:redmove 3s infinite;transition: all ease-in-out;"
+        console.log(document.styleSheets)
+
+      }
+    }
+    //随机颜色
+    FlowerRain.prototype.getColorRandom = function() {
+      var c = "#";
+      var cArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+      for (var i = 0; i < 6; i++) {
+        var cIndex = Math.round(Math.random() * 15);
+        c += cArray[cIndex];
+      }
+      return c;
+    }
+    //消失
+    FlowerRain.prototype.flowerDisappeared = function() {
+      rain.remove();
+    }
+
+    var luckMoney = new FlowerRain();
+    luckMoney.init();
+    luckMoney.createFlower(10);
+    btn.onclick = function() {
+      luckMoney.parabola('50px', '50px')
+    }
+    stop.onclick = function() {
+      luckMoney.flowerDisappeared();
+    }
+
+  }
+</script>
+
+</html>

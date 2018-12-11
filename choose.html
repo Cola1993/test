@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .img-bag {
+      width: 300px;
+      height: 500px;
+      outline: 1px solid;
+      background-color: grey;
+    }
+
+    .target {
+      border: 1px solid #fff;
+    }
+
+    .circle-dott {
+      width: 10px;
+      height: 10px;
+      margin: -5px;
+      box-sizing: border-box;
+      border-radius: 100%;
+      background: #f00;
+      display: inline-block;
+      position: absolute;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .p1,
+    .p5 {
+      cursor: nw-resize;
+    }
+
+    .p3,
+    .p7 {
+      cursor: sw-resize;
+    }
+
+    .p2,
+    .p6 {
+      cursor: n-resize;
+    }
+
+    .p4,
+    .p8 {
+      cursor: w-resize;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="img-bag">
+    <div class="container">
+      <img src="./img/step0.png" alt="" class="target" onload="handleImageLoaded()">
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  //全局变量
+  var bPla = 0,
+    arrPara = [],
+    Oclick = false,
+    Odrag = false;
+  //获取对象
+  var byClass = function(arg, num) {
+    if (num === 0 || num) {
+      return document.getElementsByClassName(arg)[num];
+    } else {
+      return document.getElementsByClassName(arg);
+    }
+  }
+
+  var oImg = byClass('target', 0);
+  var oBag = byClass('img-bag', 0);
+  var oContainer = byClass('container', 0);
+  //  console.log(oContainer)
+  var obody = document.getElementsByTagName('body')[0];
+  //计算图片初始情况
+  var handleImageLoaded = function() {
+    oWidth = oImg.naturalWidth;
+    oHeight = oImg.naturalHeight;
+    var oOffsetY = oImg.offsetTop;
+    var oOffsetX = oImg.offsetLeft;
+    var oScrollY = obody.scrollTop;
+    distanceY = oOffsetY + oScrollY;
+    distanceX = oOffsetX;
+    computeDom(oWidth, oHeight);
+  }
+  //计算节点位置
+  function computeDom(oWidth, oHeight) {
+    var oDott = byClass('circle-dott');
+    if (oDott && oDott.length != 0) {
+      var len = oDott.length;
+      for (var i = 0; i < len; i++) {
+        oDott[i].className += ' hidden';
+      }
+    }
+
+    var p1 = {
+      name: 'p1',
+      x: distanceX,
+      y: distanceY
+    };
+    var p2 = {
+      name: 'p2',
+      x: distanceX + 1 / 2 * oWidth,
+      y: distanceY
+    };
+    var p3 = {
+      name: 'p3',
+      x: distanceX + oWidth,
+      y: distanceY
+    };
+    var p4 = {
+      name: 'p4',
+      x: distanceX + oWidth,
+      y: distanceY + 1 / 2 * oHeight
+    };
+    var p5 = {
+      name: 'p5',
+      x: distanceX + oWidth,
+      y: distanceY + oHeight
+    };
+    var p6 = {
+      name: 'p6',
+      x: distanceX + 1 / 2 * oWidth,
+      y: distanceY + oHeight
+    };
+    var p7 = {
+      name: 'p7',
+      x: distanceX,
+      y: distanceY + oHeight
+    };
+    var p8 = {
+      name: 'p8',
+      x: distanceX,
+      y: distanceY + 1 / 2 * oHeight
+    };
+
+    dottSet(p1);
+    dottSet(p2);
+    dottSet(p3);
+    dottSet(p4);
+    dottSet(p5);
+    dottSet(p6);
+    dottSet(p7);
+    dottSet(p8);
+    devicePara(p1, p3, p5, p7);
+  }
+  //插入节点
+  var dottSet = function(arg) {
+    var dom = document.createElement('div');
+    dom.className = 'circle-dott ' + arg.name;
+    dom.style.top = arg.y + 'px';
+    dom.style.left = arg.x + 'px';
+    oContainer.appendChild(dom);
+  }
+  //绑定事件
+  oContainer.onmousedown = function(event) {
+    Oclick = true;
+    var e = event || window.event;
+    bpos = {
+      'x': e.screenX,
+      'y': e.screenY
+    }
+    bPla = deviceImg(bpos); //起点在第几象限
+  };
+  obody.onmouseup = function(event) {
+    Oclick = false;
+    var e = event || window.event;
+    epos = {
+      'x': e.screenX,
+      'y': e.screenY
+    };
+    var ePla = deviceImg(epos);
+
+    if (Odrag) {
+      var toX = epos.x - bpos.x;
+      var toY = epos.y - bpos.y;
+      oWidth += toX;
+      oHeight += toY;
+      console.log('移动距离：' + toX, toY);
+      if (bPla && ePla) {
+        console.log('起点象限:' + bPla, '终点象限:' + ePla);
+        //不同象限 放大缩小
+
+      }
+      oImg.style.width = oWidth + 'px'
+      oImg.style.height = oHeight + 'px'
+      computeDom(oWidth, oHeight);
+    }
+    Odrag = false;
+  };
+  oBag.onmousemove = function(event) {
+    event.preventDefault();
+    draw(event);
+  };
+
+  function draw(event) {
+    if (Oclick) {
+      Odrag = true;
+    }
+  }
+  //将图片分四个象限，
+  function deviceImg(comPos) {
+    var comPos = comPos;
+    if (comPos) {
+      if (comPos.x < ((arrPara[1].x - arrPara[0].x) / 2)) {
+        if (comPos.y < ((arrPara[2].x - arrPara[0].x) / 2)) {
+          return 1;
+        } else {
+          return 3;
+        }
+      } else {
+        if (comPos.y < ((arrPara[2].x - arrPara[0].x) / 2)) {
+          return 2;
+        } else {
+          return 4;
+        }
+      }
+    }
+  }
+  //象限参数
+  function devicePara(lTop, rTop, rBtm, lBtm) {
+    arrPara = arguments;
+  }
+</script>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+    @keyframes wave1s {
+      0% {
+          border-color: transparent;
+      }
+      25% {
+          border-color: transparent;
+      }
+      50% {
+          border-color: transparent;
+      }
+      75% {
+          border-color: transparent #45B7FF transparent transparent;
+      }
+      100% {
+          border-color: transparent #45B7FF transparent transparent;
+      }
+    }@keyframes wave2s {
+      0% {
+          border-color: transparent;
+      }
+      25% {
+          border-color: transparent;
+      }
+      50% {
+          border-color: transparent;
+      }
+      75% {
+          border-color: transparent;
+      }
+      100% {
+          border-color: transparent #45B7FF transparent transparent;
+      }
+    }
+    .bgd{
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      border-color: #45B7FF;
+      border-width: 2px;
+      border-style: solid;
+      margin: 0 auto;
+      position: fixed;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+    }
+    .square{
+      width: 10px;
+      height: 20px;
+      border-color: #45B7FF transparent #45B7FF #45B7FF;
+      border-width: 2px;
+      border-style: solid;
+      margin: auto 0;
+      position: absolute;
+      left: 25px;
+      top:0;
+      bottom: 0;
+      background-color: #fff;
+    }
+    .triangle{
+      width: 30px;
+      height: 30px;
+      border: 1px solid transparent;
+      position: absolute;
+      left: -1px;
+      top: -5px;
+      z-index: -1;
+    }
+    .tri1{
+      width: 0;
+      height: 0;
+      border: 25px solid transparent;
+      border-right: 25px solid #45B7FF;
+      position: absolute;
+      left: -28px;
+      top: -10px;
+    }
+    .tri2{
+      width: 0;
+      height: 0;
+      border: 21px solid transparent;
+      border-right: 21px solid #fff;
+      position: absolute;
+      left: -22px;
+      top: -6px;
+    }
+    .wave1{
+      width: 4px;
+      height: 15px;
+      border: 2px solid transparent;
+      border-radius: 0 100% 100% 0/50%;
+      border-left: none;
+      position: absolute;
+      left: 30px;
+      top: 8px;
+      animation:wave1s 1s linear infinite;
+      -webkit-animation:wave1s 1s linear infinite;
+    }
+    .wave2{
+      width: 6px;
+      height: 25px;
+      border: 2px solid transparent;
+      border-radius: 0 100% 100% 0/50%;
+      border-left: none;
+      position: absolute;
+      left: 41px;
+      top: 4px;
+      animation:wave2s 1s linear infinite;
+      -webkit-animation:wave2s 1s linear infinite;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="bgd">
+      <div class="square">
+        <div class="triangle">
+          <div class="tri1">
+          </div>
+          <div class="tri2">
+          </div>
+          <div class="wave1">
+          </div>
+          <div class="wave2">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

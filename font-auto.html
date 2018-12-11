@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      /* font-size: 100px; */
+    }
+    .wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      border-radius: 5px;
+      text-align: justify;
+      word-wrap: break-word;
+      font-size: 18px;
+    }
+    .option-value-wrap {
+      flex: 1;
+      position: relative;
+      height: 60px;
+      /* height改为固定高度 */
+
+
+      border: 1px solid #E9EFF4;
+    }
+    .option-value {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 60px;
+      /* 与上级同高 */
+      line-height: 25px;
+      word-wrap: break-word;
+      background-color: #ff0;
+    }
+    .select-num {
+      display: inline-block;
+      padding-right: 10px;
+      font-size: 20px;
+      color: #B3B3B3;
+    }
+    .value {
+      flex: 1;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+        /* 增加上下边距 */
+      /* 上下padding去掉 */
+      line-height: 27px;
+    }
+    .test{
+      width: 500px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="option-value-wrap">
+              <div class="option-value">
+                <span class="value">Not long ago condemned.</span>
+                <em class="select-num">×20</em>
+              </div>
+            </div>
+            <div class="option-value-wrap">
+                    <div class="option-value">
+                      <span class="value">A lot of people clap for her suggestion, because they take pets as one of the family members, A lot of people clap for her suggestion,</span>
+                      <em class="select-num">×20</em>
+                    </div>
+                  </div>
+                  <div class="option-value-wrap">
+                          <div class="option-value">
+                            <span class="value">A lot of people clap for her suggestion, because they take pets as one of the family members, A lot of people clap for her suggestion,</span>
+                            <em class="select-num">×20</em>
+                          </div>
+                        </div>
+    </div>
+    <div class="test">
+      I am so looking forward to my college life. I have pictured it thousands of times in my mind. The free lifestyle and lively parties are always appearing my mind. The great expectation of campus life endows me a lot of passion to keep study. After two years’ study, I would find my lifestyle.
+    </div>
+  </body>
+  <script type="text/javascript">
+  var test = document.getElementsByClassName('test')[0];
+
+     var option = document.getElementsByClassName('option-value')[0];
+     var optHgt = parseInt(window.getComputedStyle(option, null).height);
+     var value = document.getElementsByClassName('value');
+     var len = value.length;
+     for ( var i = 0; i < len; i++ ){
+       var height = parseInt(window.getComputedStyle(value[i], null).height);
+       var font = parseInt(window.getComputedStyle(value[i], null).fontSize);
+       autoFont();
+       function autoFont(){
+         if( height > optHgt ) {
+           font --;
+           var lineNew = font * 1.5;
+           value[i].style.cssText = 'font-size:' + font  +'px; line-height:' + lineNew +'px';
+           //value[i].style.lineHeight = lineNew +'px';
+           height = parseInt(window.getComputedStyle(value[i], null).height);
+           autoFont();
+         }
+       }
+     }
+  </script>
+</html>

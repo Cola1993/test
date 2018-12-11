@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+
+    </style>
+  </head>
+  <body>
+    <svg width="200" height="200" viewBox="0 0 200 200">
+       <circle cx="60" cy="80" r="40" fill="none" stroke="#666" stroke-width="5" />
+       <circle id="volumn" cx="60" cy="80" r="40" fill="none" stroke="#FC4D04" stroke-width="5" stroke-dasharray ="339" transform="rotate(270,60,80)"/>
+     </svg>
+     <button id="button" name="button"></button>
+     <script type="text/javascript">
+       var length = document.querySelectorAll('circle')[1].getTotalLength()
+       var volumn = document.getElementById('volumn')
+       function receiveVolumn(){
+         var numSet = parseInt(Math.random()*30,10)
+         //console.log(numSet)
+         return numSet;
+       }
+       var draw = setInterval(drawVol,100)
+
+       function drawVol() {
+         var num = receiveVolumn()
+         var percent = parseInt(num/30*length)
+         volumn.style.strokeDashoffset = percent
+         console.log(volumn.style.strokeDashoffset)
+       }
+       document.getElementById('button').onclick = function () {
+         clearInterval(draw)
+       }
+     </script>
+  </body>
+</html>

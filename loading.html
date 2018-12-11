@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+<style type="text/css">
+  .aaa {
+    position: relative;
+    width: 100px;
+    height: 500px;
+    border: 1px solid;
+  }
+
+  .bound {
+    position: absolute;
+    top: 132px;
+    left: 10px;
+    width: 30px;
+    height: 100px;
+    background: #f00;
+    border: 1px solid;
+  }
+
+  .boundyes {
+    display: inline-block;
+    top:118.8px;
+    left: 60px;
+    border: 1px solid;
+  }
+</style>
+
+<body>
+  <div class="aaa" id="app">
+    <div class="bound boundyes" :style="{ 'top': mTop + 'px','transitionDuration':'1s'}">{{numyes}}</div>
+    <div class="bound boundno">{{numno}}</div>
+  </div>
+</body>
+<script type="text/javascript">
+  // var mboundYes = document.getElementsByClassName('bound')[0];
+  // var mboundNo = document.getElementsByClassName('bound')[1];
+  var numTotal = 132;
+  var counter = null;
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      numyes: 10,
+      numno: 0,
+      mTop:null
+    },
+    // watch: {
+    //   numyes: function(val) {
+    //     // if (this.type == 3) {
+    //     //   // console.log('222')
+    //     //   this.exitBound()
+    //     // }
+    //   },
+    //   numno: function(val) {
+    //     // if (this.type == 3) {
+    //     //   // console.log('333')
+    //     //   this.exitBound()
+    //     // }
+    //   }
+    // },
+    methods: {
+      boundByOne: function(newVal, oldVal) {
+        clearInterval(counter);
+        var len = (newVal > oldVal) ? (newVal - oldVal) : (oldVal - newVal);
+        var self = this;
+        if (newVal > oldVal) {
+          counter = setInterval(function() {
+            if (oldVal < newVal) {
+              oldVal++;
+              self.numyes = oldVal;
+              var mTop = numTotal - (oldVal * 1.32);
+              self.mTop = mTop;
+            } else if (oldVal == newVal) {
+              clearInterval(counter);
+            }
+          }, 100)
+        } else {
+          //高度减少
+          counter = setInterval(function() {
+            if (oldVal > newVal) {
+              oldVal--;
+              self.numyes = oldVal;
+              var mTop = numTotal - (oldVal * 1.32);
+              self.mTop = mTop;
+            } else if (oldVal == newVal) {
+              clearInterval(counter);
+            }
+          }, 100)
+        }
+      }
+    },
+    created: function() {
+      // this.numyes = 10;
+      var self = this;
+      this.boundByOne(5, 10);
+      setTimeout(function(){
+        self.boundByOne(50,5)
+      },2000)
+    }
+  });
+</script>
+
+</html>

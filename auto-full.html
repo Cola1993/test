@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .linear-container {
+        width: 50px;
+        height: 15px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .linear-img {
+        width: 400px;
+        height: 100%;
+        background-image: -webkit-linear-gradient(45deg, #abcdef, #aba);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="linear-container" id="container">
+      <div class="linear-img" id="linear"></div>
+    </div>
+    <div class="" id="process"></div>
+  </body>
+  <script type="text/javascript">
+    var byId = document.getElementById.bind(document)
+    var oContainer = byId('container')
+    var oLinear = byId('linear')
+    var oProcess = byId('process')
+    var wholeProcess = 400
+    var currentProcess = 0
+    var run = function run () {
+      var callee = arguments.callee
+      setTimeout(() => {
+        var rate = (currentProcess / wholeProcess * 100).toFixed(2)
+        oContainer.style.width = currentProcess + 'px'
+        console.log(currentProcess + 'px')
+        oProcess.innerHTML = rate + '%'
+        currentProcess ++
+        currentProcess <= wholeProcess ? callee() : void 0
+      }, 85)
+    }
+    run()
+  </script>
+</html>

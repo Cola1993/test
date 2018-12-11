@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Canvas tutorial</title>
+    <script type="text/javascript">
+    window.onload = function() {
+      var canvas = document.getElementById('tutorial');
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+      var ctx = canvas.getContext('2d');
+      var mouseDown = false
+      canvas.addEventListener('mousedown',function(e){
+        if (canvas.getContext){
+          ctx.beginPath()
+          var staPos={}
+            if(e.button = 1 && e.pageX < 500 && e.pageY < 500){
+              staPos.x = e.pageX
+              staPos.y = e.pageY
+              }
+          console.log(staPos)
+          ctx.moveTo(staPos.x,staPos.y);
+          mouseDown = true
+        }
+      })
+      canvas.addEventListener('mousemove',function(e) {
+        if(mouseDown){
+          var midPos={}
+          if(e.button = 1){
+            midPos.x = e.pageX
+            midPos.y = e.pageY
+          }
+          ctx.lineTo(midPos.x,midPos.y)
+          console.log(midPos)
+          ctx.stroke()
+        }
+      })
+      canvas.addEventListener('mouseup',function() {
+        mouseDown = false
+        ctx.closePath()
+      })
+}
+    </script>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body>
+    <canvas id="tutorial"></canvas>
+  </body>
+</html>

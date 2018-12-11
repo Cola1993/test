@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+  html{
+      height: 100%;
+      width: 100%;
+      outline: 1px solid;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+      .close{
+        width: 50px;
+        height: 50px;
+        background: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="dialog"></div> -->
+    <script type="text/javascript">
+     function Dialog(obj){
+       this.obj = obj || {
+         id: 'dialog',
+         width: 600,
+         height:200,
+         isClose:true,
+         isChoose:true,
+         btnNum:2
+       };
+       this.domObj = document.getElementById('dialog');
+    
+     }
+     Dialog.prototype.show = function(){
+       var styleText = "width:"+this.obj.width + "px;height:"+ this.obj.height +"px;border:1px solid;";
+       this.domObj.style.cssText = styleText;
+       if(this.obj.isClose){
+         var closeBtn = document.createElement('div');
+         closeBtn.className = 'close';
+         this.domObj.appendChild(closeBtn)
+       }
+     }
+     Dialog.prototype.hide = function(){
+       console.log('hide');
+     }
+
+    var demoLog = new Dialog();
+    // console.log(demoLog);
+    setTimeout(function(){
+        demoLog.show();
+    },1000);
+    </script>
+
+  </body>
+</html>

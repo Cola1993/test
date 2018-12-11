@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>动画调研</title>
+  <style type="text/css">
+    .wrap {
+      width: 100px;
+      height: 285px;
+      border: 1px solid;
+      position: fixed;
+      top: 50px;
+      left: 50px;
+      overflow: hidden;
+    }
+
+    .bound {
+      display: inline-block;
+      position: relative;
+      top: 45px;
+      left: 0;
+      width: 100px;
+      height: 240px;
+      background: rgba(76, 199, 96, 1);
+      border-radius: 50px 50px 0 0;
+      opacity: 0.5;
+    }
+
+    .rate {
+      width: 71px;
+      height: 45px;
+      font-size: 32px;
+      font-family: PingFangSC-Semibold;
+      color: rgba(51, 51, 51, 1);
+      line-height: 45px;
+      position: absolute;
+      top: -45px;
+      left: 0;
+      /* z-index: 30px; */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="bound">
+      <div class="rate">
+        <span id="num">0</span>%
+      </div>
+    </div>
+  </div>
+
+</body>
+<script type="text/javascript">
+  window.onload = function() {
+    var mbound = document.getElementsByClassName('bound')[0];
+    var mNum = document.getElementById('num');
+
+    function doolNum() {
+      var num = 100;
+      for (var i = 0; i < 100; i++) {
+        setTimeout(function() {
+          num--;
+          exitBound(num);
+        }, 1000)
+      }
+    }
+
+    function exitBound(num) {
+      console.log(mNum);
+      console.log(num);
+      mNum.innerText = num;
+      var numTotal = 100;
+      var mTop = (numTotal - num) * 2.4 + 45;
+      mbound.style.top = mTop + 'px';
+      mbound.style.transitionDuration = '5s';
+    }
+    doolNum();
+  }
+</script>
+
+</html>

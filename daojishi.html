@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>canvas练习</title>
+</head>
+
+<body>
+  <div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvasOne" width="500" height="300">
+  Your browser does not support HTML5 Canvas.
+  </canvas>
+  </div>
+</body>
+<script type="text/javascript">
+  window.addEventListener("keydown", eventKeyPressed, true);
+  var theCanvas = document.getElementById("canvas");
+  var guesses = 0;
+  var message = "Guess The Letter From a (lower) to z (higher)";
+  var letters = [
+    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+    "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+  ];
+  var today = new Date();
+  var letterToGuess = "";
+  var higherOrLower = "";
+  var lettersGuessed;
+  var gameOver = false;
+
+  function initGame() {
+    var letterIndex = Math.floor(Math.random() * letters.length);
+    letterToGuess = letters[letterIndex];
+    guesses = 0;
+    lettersGuessed = [];
+    gameOver = false;
+    window.addEventListener("keydown", eventKeyPressed, true);
+    drawScreen();
+  }
+</script>
+
+</html>

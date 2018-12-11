@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style type="text/css">
+
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript">
+      var canvas=document.getElementById("canvas");
+      var cxt=canvas.getContext("2d");
+      //画一个空心圆
+      // cxt.beginPath();
+      // cxt.arc(200,200,50,0,360,false);
+      // cxt.lineWidth=5;
+      // cxt.strokeStyle="green";
+      // cxt.stroke();//画空心圆
+      // cxt.closePath();
+      //画一个实心圆
+      // cxt.beginPath();
+      // cxt.arc(200,100,50,0,360,false);
+      // cxt.fillStyle="red";//填充颜色,默认是黑色
+      // cxt.fill();//画实心圆
+      // cxt.closePath();
+      //空心和实心的组合
+      cxt.beginPath();
+      cxt.arc(300,300,50,0,360,false);
+      cxt.fillStyle="red";
+      cxt.fill();
+      cxt.strokeStyle="green";
+      cxt.stroke();
+      cxt.closePath();
+
+    </script>
+  </body>
+</html>

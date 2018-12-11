@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id='canvas' width='750' height='500'>
+    Canvas not supported
+</canvas>
+<script>
+    var canvas = document.getElementById('canvas'),
+            context = canvas.getContext('2d'),
+    //定义三个球
+            discs = [
+                {
+                    x: 150,
+                    y: 250,
+                    velocityX: -3.2,
+                    velocityY: 3.5,
+                    radius: 3,
+                    fillStyle: 'gray'
+                }
+            ],
+            colors = ["#EF5350", "#EC407A", "#AB47BC", "#7E57C2", "#5C6BC0", "#42A5F5", "#29B6F6", "#26C6DA", "#26A69A", "#66BB6A", "#9CCC65", "#D4E157", "#FFEE58", "#FFCA28", "#FFA726", "#FF7043", "#8D6E63", "#BDBDBD", "#78909C"],
+            animateButton = document.getElementById('animateButton'),
+            start, end;
+
+    // Functions.....................................................
+    function initRect() {
+        discs = [];
+        for (var i = 0; i < 40; i++) {
+            discs.push({
+                x: random(200, 240),
+                y: random(200, 240),
+                velocityX: random(-15, 15),
+                velocityY: random(-15, 15),
+                width: 16,
+                height: 10,
+                radius: 4,
+                opacity: 1,
+                ratio:0.95,
+                rotate: random(0, 360),
+                fillStyle: colors[random(0, 17)]
+
+            })
+        }
+        console.log(discs)
+        timer(true);
+    }
+    function timer(isStart) {
+        if (isStart) {
+            start = Date.now();
+        } else {
+            end = Date.now();
+        }
+    }
+    function random(min, max) {
+        return parseInt((Math.random() * ( max - min ) + min).toFixed(1));
+    }
+
+    function drawUsingArc(rect, r, ctx,disc) {
+        var path = new Path2D();
+
+        path.moveTo(rect.x + r, rect.y);
+        path.lineTo(rect.x + rect.width - r, rect.y);
+        path.arc(rect.x + rect.width - r, rect.y + r, r, Math.PI / 180 * 270, 0, false);
+        path.lineTo(rect.x + rect.width, rect.y + rect.height - r);
+        path.arc(rect.x + rect.width - r, rect.y + rect.height - r, r, 0, Math.PI / 180 * 90, 0, false);
+        path.lineTo(rect.x + r, rect.y + rect.height);
+        path.arc(rect.x + r, rect.y + rect.height - r, r, Math.PI / 180 * 90, Math.PI / 180 * 180, false);
+        path.lineTo(rect.x, rect.y + r);
+        path.arc(rect.x + r, rect.y + r, r, Math.PI / 180 * 180, Math.PI / 180 * 270, false);
+        if ((end - start) > 800) {
+            ctx.globalAlpha = disc.opacity;
+            disc.opacity>0.03?disc.opacity -= 0.02:disc.opacity = 0;
+            disc.opacity === 0?initRect():null;
+        }
+
+        ctx.fill(path);
+    }
+
+    function update() {
+        var disc = null;
+
+        for (var i = 0; i < 40; ++i) {
+            disc = discs[i];
+//            if (disc.x + disc.velocityX + disc.radius > context.canvas.width ||
+//                    disc.x + disc.velocityX - disc.radius < 0)
+//                disc.velocityX = 0;
+//
+//            if (disc.y + disc.velocityY + disc.radius > context.canvas.height ||
+//                    disc.y + disc.velocityY - disc.radius < 0)
+//                disc.velocityY = 0;
+            disc.velocityX*=disc.ratio;
+            disc.velocityY*=disc.ratio;
+            disc.x += disc.velocityX;
+            disc.y += disc.velocityY;
+        }
+    }
+
+    function draw() {
+        for (var i = 0; i < 40; ++i) {
+            var disc = discs[i];
+
+            context.save();
+            context.beginPath();
+            context.fillStyle = disc.fillStyle;
+            drawUsingArc({x: disc.x, y: disc.y, width: disc.width, height: disc.height}, disc.radius, context,disc);
+            context.restore();
+
+        }
+    }
+
+    // 动画.....................................................
+    function animate() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        update();
+        draw();
+        timer(false);
+        requestAnimationFrame(animate);
+    }
+    initRect();
+    animate()
+    // 初始化................................................
+
+
+</script>
+</body>
+</html>

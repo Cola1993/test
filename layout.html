@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    #c {
+      background-color: rgba(134, 179, 225, 1);
+    }
+    #canvas {
+      /* background-color: rgba(134, 179, 225, 1); */
+    }
+  </style>
+</head>
+
+<body>
+  <div style="margin-bottom: 15px;">
+  <button id="left">Rotate Reft</button>
+  <button id="right">Rotate Right</button>
+</div>
+<div style="position: relative; overflow: hidden;display:inline-block;">
+
+  <canvas id="canvas"></canvas>
+</div>
+  <!-- <canvas id="c" width="400px" height="400px">not support</canvas> -->
+</body>
+<script type="text/javascript">
+  // window.onload = init;
+  // var ctx = null;
+  // var recX = 150,
+  //   recY = 150,
+  //   angle = 0;
+  //
+  // function init() {
+  //   var cvs = document.getElementById('c');
+  //   ctx = cvs.getContext('2d');
+  //   drawRectangle();
+  // }
+  //
+  // function setPos(arg) {
+  //   ctx.translate(recX, recY);
+  //   ctx.rotate(arg * Math.PI / 180);
+  // }
+  //
+  // function drawRectangle() {
+  //   var r = 50,
+  //     angle = 25,
+  //     x = 100,
+  //     y = 50;
+  //   var m = r * Math.sin(angle * Math.PI / 180);
+  //   var n = r * Math.cos(angle * Math.PI / 180);
+  //   var path = new Path2D();
+  //   path.moveTo(x, y);
+  //   path.lineTo(x + m, y - n);
+  //   path.lineTo(x + 2 * m, y);
+  //   path.lineTo(x + m, y + n);
+  //   path.lineTo(x, y);
+  //   path.rotate(30 * Math.PI / 180);
+  //   ctx.fillStyle = '#fff';
+  //   ctx.fill(path);
+  //   requestAnimationFrame(this.animate);
+  // }
+  // function animate() {
+  //   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  //   this.update();
+  //   this.drawRectangle();
+  //   // this.timer(false);
+  //   requestAnimationFrame(this.animate);
+  // };
+//   var canvas=document.getElementById("c");
+//   var ctx=canvas.getContext("2d");
+//   var cw=canvas.width;
+//   var ch=canvas.height;
+//
+//   var p1={x:75,y:75};
+//   var p2={x:150,y:150};
+//   var dx=p2.x-p1.x;
+//   var dy=p2.y-p1.y;
+//   var length=Math.sqrt(dx*dx+dy*dy);
+//   var angle=Math.atan2(dy,dx);
+//   var midX=(p2.x+p1.x)/2;
+//   var midY=(p2.y+p1.y)/2;
+//
+//   console.log(midX,midY);
+//
+//   draw(angle);
+//
+//   requestAnimationFrame(animate);
+//
+//   function animate(time){
+//     requestAnimationFrame(animate);
+//     draw(angle);
+//     angle+=Math.PI/30;
+//   }
+//   function draw(radianAngle){
+//   ctx.clearRect(0,0,canvas.width,canvas.height);
+//   ctx.save();
+//   ctx.translate(midX,midY);
+//   ctx.rotate(radianAngle);
+//   ctx.beginPath();
+//   ctx.strokeStyle='red';
+//   ctx.moveTo(-length/2,0);
+//   ctx.lineTo(length/2,0);
+//   ctx.stroke();
+//   ctx.restore();
+// }
+var canvas = document.getElementById('canvas');
+var img = new Image();
+var ctx = canvas.getContext('2d');
+var rect = {};
+var drag = false;
+var update = true; // when true updates canvas
+var angle = 0;
+
+document.getElementById('right').addEventListener("click", rotateRight, false);
+document.getElementById('left').addEventListener("click", rotateLeft, false);
+
+function rotateRight() {
+  angle += Math.PI / 2;
+  drawCanvas(true); // let know we're from rotate function
+}
+
+function rotateLeft() {
+  angle -= Math.PI / 2;
+  drawCanvas(true);
+}
+
+function init() {
+  img.addEventListener('load', function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    canvas.addEventListener('mousedown', mouseDown, false);
+    canvas.addEventListener('mouseup', mouseUp, false);
+    canvas.addEventListener('mousemove', mouseMove, false);
+  });
+
+  // start the rendering loop
+  requestAnimationFrame(updateCanvas);
+}
+// main render loop only updates if update is true
+function updateCanvas() {
+  if (update) {
+    drawCanvas(false); // don't rotate the rectangle here
+    update = false;
+  }
+
+  requestAnimationFrame(updateCanvas);
+}
+
+// draws a rectangle with rotation
+function drawRect() {
+  ctx.clearRect(rect.startX, rect.startY, rect.w, rect.h);
+}
+// clears canvas sets filters and draws rectangles
+function drawCanvas(fromRotate) {
+  // reset the transformation matrix to its defaults
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = 'rgba(32, 32, 32, 0.7)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // for the rectangle, rotate only if we are using previously set rect
+  if (fromRotate) {
+    // Move to center
+    ctx.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
+    // rotate by the current angle
+    ctx.rotate(angle);
+    // move back to what is now top right corner
+    ctx.translate(-canvas.width / 2, -canvas.height / 2);
+  }
+  drawRect();
+  // draw the image behind the overlay
+  ctx.globalCompositeOperation = 'destination-over';
+  // rotate the whole context every time for the image
+  ctx.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
+  // rotate by the current angle
+  ctx.rotate(angle);
+  // draw the image, from center
+  ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+}
+// create new rect add to array
+function mouseDown(e) {
+  rect = {
+    startX: e.offsetX,
+    startY: e.offsetY,
+    w: 1,
+    h: 1
+  };
+  drag = true;
+}
+
+function mouseUp() {
+  drag = false;
+  update = true;
+}
+
+function mouseMove(e) {
+  if (drag) {
+    rect.w = (e.offsetX - this.offsetLeft) - rect.startX;
+    rect.h = (e.offsetY - this.offsetTop) - rect.startY;
+    update = true;
+  }
+}
+
+init();
+img.src = 'https://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
+</script>
+
+</html>

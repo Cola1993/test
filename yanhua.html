@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    body {
+      background: transparent;
+    }
+
+    #abc {
+      background: #ffffff;
+      cursor: pointer;
+      border: 1px solid;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="abc" style="width:500px;height: 500px;"></div>
+</body>
+<script type="text/javascript">
+  function CreateYanHua(opt) {
+    var opt = opt || {
+      id: 'myCanvas',
+      className: 'myCanvas',
+      size: 40,
+      range: ['', '']
+    };
+    this.canvas = document.createElement('canvas');
+    this.canvas.id = opt.id || 'myCanvas';
+    this.canvas.className = opt.className || 'myCanvas';
+    this.parent = opt.ele || document.body;
+    this.canvas.width = opt.width || this.parent.offsetWidth;
+    this.canvas.height = opt.height || this.parent.offsetHeight;
+    this.length = opt.size || 40;
+    this.range = [opt.range[0] || (this.canvas.width + this.canvas.height) / 4, opt.range[1] || (this.canvas.width + this.canvas.height) / 4];
+    this.broundRect = opt.broundRect || {};
+    this.context = this.canvas.getContext('2d');
+    this.discs = [];
+    this.colors = ["#FFD816", "#8A67FF", "#71ED86", "#FB6951"]
+    this.start = 0;
+    this.end = 0;
+    this.initRect();
+    this.animate = this.animate.bind(this);
+    this.parent.appendChild(this.canvas);
+
+    requestAnimationFrame(this.animate);
+  }
+  CreateYanHua.prototype.animate = function animate() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.update();
+    this.draw();
+    this.timer(false);
+    requestAnimationFrame(this.animate);
+  };
+  CreateYanHua.prototype.initRect = function() {
+    this.discs = [];
+    for (var i = 0; i < this.length; i++) {
+
+      var param = {
+        turning: false,
+        falling: false,
+        r: this.random(8, 13),
+        angle: this.random(15, 22),
+        x: this.random(this.range[0], this.range[1]),
+        y: this.random(this.range[0], this.range[1]),
+        velocityX: this.random(-5, 5),
+        velocityY: this.random(0, 5),
+        opacity: 1,
+        ratio: this.broundRect.ratio || 0.95,
+        fillStyle: this.colors[parseInt(this.random(0, this.colors.length))]
+      }
+      if (i % 2) {
+        param.velocityX > 0 ? param.velocityX = -param.velocityX : '';
+      } else {
+        param.velocityX < 0 ? param.velocityX = -param.velocityX : '';
+      }
+      param.initHeight = param.height;
+      param.initWidth = param.width;
+      param.initX = param.x;
+      param.initY = param.y;
+      this.discs.push(param)
+    }
+    this.timer(true);
+  };
+  CreateYanHua.prototype.timer = function(isStart) {
+    isStart ? this.start = Date.now() : this.end = Date.now();
+  };
+  CreateYanHua.prototype.random = function(min, max) {
+    return Math.random() * (max - min) + min;
+  };
+  CreateYanHua.prototype.drawRhombus = function(rect, ctx, disc) {
+      var path = new Path2D();
+      var r = rect.r,
+        angle = rect.angle,
+        x = rect.x,
+        y = rect.y;
+      var m = r * Math.sin(angle * Math.PI / 180);
+      var n = r * Math.cos(angle * Math.PI / 180);
+
+      path.moveTo(x, y);
+      path.lineTo(x + m, y - n);
+      path.lineTo(x + 2 * m, y);
+      path.lineTo(x + m, y + n);
+      path.lineTo(x, y);
+      if ((this.end - this.start) > 800) {
+        ctx.globalAlpha = disc.opacity;
+        disc.opacity > 0.03 ? disc.opacity -= 0.02 : disc.opacity = 0;
+        disc.opacity === 0 ? this.initRect() : null;
+      }
+      ctx.fill(path);
+    },
+    CreateYanHua.prototype.update = function() {
+      var disc = null;
+
+      for (var i = 0; i < this.length; ++i) {
+        disc = this.discs[i];
+
+        disc.velocityX = disc.velocityX * (0.04 + disc.ratio);
+        disc.velocityY = disc.velocityY * 0.96;
+        var hight = disc.initY-disc.y  ;
+        if ((hight == 0 || hight < 30)  && !disc.falling) {
+          disc.y -= disc.velocityY;
+        } else {
+          disc.falling = true;
+          disc.velocityY = disc.velocityY * (0.155 + disc.ratio);
+          disc.y += disc.velocityY;
+        }
+        disc.x += disc.velocityX;
+
+        // if (i % 2 == 0) {
+        //   var height = disc.initHeight;
+        //   if ((disc.height > 0 && !disc.turning) || (disc.height > height)) {
+        //     if (!disc.falling) {
+        //       disc.height -= 0.08;
+        //     } else {
+        //       disc.height -= 0.8;
+        //     }
+        //     disc.turning = false;
+        //   } else if (disc.height < 0 || disc.turning) {
+        //     if (!disc.falling) {
+        //       disc.height += 0.08;
+        //     } else {
+        //       disc.height += 0.8;
+        //     }
+        //     disc.turning = true;
+        //   }
+        // } else {
+        //   var width = disc.initWidth;
+        //   if ((disc.width > 0 && !disc.turning) || (disc.width > width)) {
+        //     if (!disc.falling) {
+        //       disc.width -= 0.08;
+        //     } else {
+        //       disc.width -= 0.8;
+        //     }
+        //     disc.turning = false;
+        //   } else if (disc.width < 0 || disc.turning) {
+        //     if (!disc.falling) {
+        //       disc.width += 0.08; //上升
+        //     } else {
+        //       disc.width += 0.8; //下降
+        //     }
+        //     disc.turning = true;
+        //   }
+        // }
+      }
+    };
+  CreateYanHua.prototype.draw = function() {
+    for (var i = 0; i < this.length; ++i) {
+      var disc = this.discs[i];
+      this.context.save();
+      this.context.beginPath();
+      this.context.fillStyle = disc.fillStyle;
+      this.drawRhombus({
+        index: i,
+        x: disc.x,
+        y: disc.y,
+        r: disc.r,
+        angle: disc.angle
+      }, this.context, disc);
+      this.context.restore();
+    }
+  };
+
+
+  new CreateYanHua({
+    id: 'myCanvas',
+    className: 'myCanvas',
+    size: 1,
+    range: ['', ''],
+    ele: document.getElementById('abc')
+  });
+</script>
+
+</html>
